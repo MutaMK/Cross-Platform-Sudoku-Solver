@@ -51,7 +51,7 @@ void cMain::btnSolveClicked(wxCommandEvent &evt)
 		}
 	}
 
-	my_solve_sudoku(sudoku, 1);
+	my_solve_sudoku(sudoku, highest_weight(sudoku));
 
 	for (int y = 0; y < 9; y++)
 	{
@@ -63,7 +63,7 @@ void cMain::btnSolveClicked(wxCommandEvent &evt)
 			txt_grid[y * 9 + x]->AppendText(mystring);
 		}
 	}
-	evt.Skip(); //measn event is done
+	evt.Skip(); //means event is done
 }
 
 int is_valid(int sudoku[9][9], int depth, int num)
@@ -101,22 +101,11 @@ int is_valid(int sudoku[9][9], int depth, int num)
 
 int my_solve_sudoku(int sudoku[9][9], int depth)
 {
+	if (depth == -1) return 1;
+
 	int col = depth % 9;
 	if (col == 0) col = 9;
 	int row = (depth + 9 - col) / 9;
-
-	if (depth == 82) return 1;
-
-	while (sudoku[row - 1][col - 1] != 0)
-	{
-		depth++;
-		if (depth == 82) return 1;
-		col = depth % 9;
-		if (col == 0) col = 9;
-		row = (depth + 9 - col) / 9;
-	}
-
-	if (depth == 82) return 1;
 
 
 	for (int i = 1; i < 10; i++)
@@ -125,7 +114,7 @@ int my_solve_sudoku(int sudoku[9][9], int depth)
 		{
 			sudoku[row - 1][col - 1] = i;
 			//print_sudoku(sudoku);
-			if (my_solve_sudoku(sudoku, depth + 1) == 1) return 1;
+			if (my_solve_sudoku(sudoku, highest_weight(sudoku)) == 1) return 1;
 			else
 			{
 				sudoku[row - 1][col - 1] = static_sudo[row - 1][col - 1];
@@ -133,5 +122,49 @@ int my_solve_sudoku(int sudoku[9][9], int depth)
 		}
 	}
 	return 0;
+}
 
+int get_weight(int sudoku[9][9], int row, int col)
+{
+	int weight = 0;
+	if (sudoku[row + 1][col + 1] != 0) weight += 1;
+	if (sudoku[row + 1][col - 1] != 0) weight += 1;
+	if (sudoku[row - 1][col + 1] != 0) weight += 1;
+	if (sudoku[row - 1][col - 1] != 0) weight += 1;
+
+	for (int j = 0; j < 6; j++)
+	{
+		if (sudoku[row][j] != 0) weight += 1;
+	}
+
+	for (int j = 0; j < 9; j++)
+	{
+		if (sudoku[j][col] != 0) weight += 1;
+	}
+	return weight;
+}
+
+int highest_weight(int sudoku[9][9])
+{
+	int depth = 0;
+	int max[2] = { -1,-1 };
+	int current;
+
+	for (int j = 0; j < 9; j++)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			depth += 1;
+			if (sudoku[j][i] == 0)// row collum
+			{
+				current = get_weight(sudoku, j, i);
+				if (current > max[0])
+				{
+					max[0] = current;
+					max[1] = depth;
+				}
+			}
+		}
+	}
+	return max[1];
 }

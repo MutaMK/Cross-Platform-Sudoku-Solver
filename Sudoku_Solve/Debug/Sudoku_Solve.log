@@ -1,2 +1,4 @@
-﻿  cMain.cpp
-  Sudoku_Solve.vcxproj -> C:\Users\admin\source\repos\Sudoku_Solve\Debug\Sudoku_Solve.exe
+﻿  cApp.cpp
+  cMain.cpp
+  Generating Code...
+  Sudoku_Solve.vcxproj -> C:\Users\admin\source\repos\Sudoku_Solve\Cross-Platform-Sudoku-Solver\Debug\Sudoku_Solve.exe

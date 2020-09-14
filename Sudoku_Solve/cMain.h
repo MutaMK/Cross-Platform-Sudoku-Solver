@@ -18,3 +18,5 @@ public:
 
 int my_solve_sudoku(int sudoku[9][9], int depth);
 int is_valid(int sudoku[9][9], int depth, int num);
+int get_weight(int sudoku[9][9], int row, int col);
+int highest_weight(int sudoku[9][9]);
