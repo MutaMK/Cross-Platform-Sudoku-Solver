@@ -132,7 +132,7 @@ int get_weight(int sudoku[9][9], int row, int col)
 	if (sudoku[row - 1][col + 1] != 0) weight += 1;
 	if (sudoku[row - 1][col - 1] != 0) weight += 1;
 
-	for (int j = 0; j < 6; j++)
+	for (int j = 0; j < 9; j++)
 	{
 		if (sudoku[row][j] != 0) weight += 1;
 	}
